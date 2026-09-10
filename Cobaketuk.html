@@ -16,13 +16,15 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background: #fff;
     font-family: Arial, sans-serif;
-    background: white;
 }
 
 body {
     display: flex;
     flex-direction: column;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 /* =====================================================
@@ -32,18 +34,18 @@ body {
 #bagianNot {
     width: 100%;
     height: 50vh;
-    padding: 5px 10px;
     display: flex;
     flex-direction: column;
+    padding: 4px 10px;
 }
 
 .birama {
     width: 100%;
     height: 50%;
+    border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 2px solid #ddd;
     overflow: hidden;
 }
 
@@ -52,94 +54,101 @@ body {
 }
 
 .not-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100%;
-    gap: clamp(10px, 3vw, 25px);
-}
-
-/* =====================================================
-   SIMBOL
-===================================================== */
-
-.simbol {
-    position: relative;
-    width: clamp(60px, 14vw, 100px);
-    height: 110px;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: clamp(14px, 4vw, 35px);
+}
+
+.garis-birama {
+    width: 3px;
+    height: 105px;
+    background: #111;
+    margin-left: 5px;
+}
+
+
+/* =====================================================
+   NOT BIASA
+===================================================== */
+
+.not {
+    position: relative;
+    width: 70px;
+    height: 110px;
+    flex-shrink: 0;
 }
 
 /* Kepala not */
 
 .kepala {
     position: absolute;
-    width: 42px;
-    height: 30px;
-    border: 5px solid #111;
+    width: 39px;
+    height: 28px;
+    left: 12px;
+    top: 51px;
+    border: 4px solid #111;
     border-radius: 50%;
     transform: rotate(-15deg);
 }
 
-/* Not hitam */
+/* Kepala hitam */
 
-.kepala.hitam {
+.hitam .kepala {
     background: #111;
 }
 
-/* Garis horizontal yang menembus kepala */
-
-.garis-not {
-    position: absolute;
-    width: 70px;
-    height: 4px;
-    background: #111;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Batang not */
+/* Batang */
 
 .batang {
     position: absolute;
-    width: 5px;
-    height: 58px;
+    width: 4px;
+    height: 62px;
+    left: 48px;
+    top: 9px;
     background: #111;
-    left: calc(50% + 17px);
-    top: 13px;
 }
 
 /* Bendera */
 
 .bendera {
     position: absolute;
-    width: 30px;
-    height: 35px;
+    width: 27px;
+    height: 31px;
+    left: 48px;
+    top: 9px;
     border-right: 5px solid #111;
     border-bottom: 5px solid #111;
     border-radius: 0 0 18px 0;
-    left: calc(50% + 17px);
-    top: 10px;
 }
 
-.bendera.dua {
-    top: 25px;
+/* Garis horizontal menembus kepala */
+
+.garis-horizontal {
+    position: absolute;
+    width: 66px;
+    height: 4px;
+    background: #111;
+    left: 2px;
+    top: 63px;
 }
+
 
 /* =====================================================
    NOT 4 KETUK
 ===================================================== */
 
+.not-4 .batang,
+.not-4 .bendera {
+    display: none;
+}
+
 .not-4 .kepala {
     background: white;
 }
 
-.not-4 .garis-not {
-    display: block;
-}
 
 /* =====================================================
    NOT 2 KETUK
@@ -149,289 +158,282 @@ body {
     background: white;
 }
 
+
 /* =====================================================
    NOT 1 KETUK
 ===================================================== */
 
-.not-1 .kepala {
-    background: #111;
+.not-1 .batang {
+    display: block;
 }
+
+.not-1 .bendera {
+    display: none;
+}
+
 
 /* =====================================================
    NOT 1/2 KETUK
 ===================================================== */
 
-.not-05 .kepala {
-    background: #111;
-}
-
-.not-05 .batang {
-    display: block;
-}
-
+.not-05 .batang,
 .not-05 .bendera {
     display: block;
 }
 
+
 /* =====================================================
-   DUA NOT SETENGAH KETUK YANG DISAMBUNG
+   DUA NOT 1/2 KETUK TERSAMBUNG
 ===================================================== */
 
-.dua-setengah {
-    display: flex;
-    align-items: center;
+.dua-eighth {
     position: relative;
-    width: 105px;
+    width: 115px;
+    height: 110px;
+    flex-shrink: 0;
+}
+
+.eighth-kecil {
+    position: absolute;
+    width: 48px;
     height: 110px;
 }
 
-.dua-setengah .not-kecil {
-    position: relative;
-    width: 52px;
-    height: 100px;
+.eighth-kecil.kiri {
+    left: 0;
 }
 
-.dua-setengah .kepala {
+.eighth-kecil.kanan {
+    left: 43px;
+}
+
+.eighth-kecil .kepala {
     width: 34px;
     height: 25px;
-    border-width: 5px;
+    left: 7px;
+    top: 53px;
+    border-width: 4px;
     background: #111;
-    top: 55px;
 }
 
-.dua-setengah .batang {
-    height: 55px;
-    width: 5px;
-    top: 13px;
-    left: 32px;
-}
-
-/* Garis penghubung dua not */
-
-.dua-setengah .penghubung {
-    position: absolute;
-    height: 9px;
-    width: 67px;
+.eighth-kecil .batang {
+    width: 4px;
+    height: 64px;
+    left: 37px;
+    top: 10px;
     background: #111;
-    top: 14px;
-    left: 23px;
 }
 
-/* Garis kedua untuk tampilan not 1/16-like beam */
-.dua-setengah .penghubung2 {
+/* Balok penyambung */
+
+.beam {
     position: absolute;
+    left: 35px;
+    top: 10px;
+    width: 55px;
+    height: 10px;
+    background: #111;
+}
+
+.beam2 {
+    position: absolute;
+    left: 35px;
+    top: 23px;
+    width: 55px;
     height: 7px;
-    width: 60px;
     background: #111;
-    top: 27px;
-    left: 27px;
 }
+
 
 /* =====================================================
    ISTIRAHAT
 ===================================================== */
 
-.istirahat {
+.rest {
     position: relative;
     width: 75px;
-    height: 100px;
+    height: 110px;
+    flex-shrink: 0;
 }
 
 /*
-   Bentuk istirahat dibuat besar.
-   Garis horizontal membedakan 4 ketuk dan 2 ketuk.
+   Simbol istirahat dibuat menggunakan
+   bentuk geometris agar tampil konsisten
+   di Android.
 */
 
 .rest-bentuk {
     position: absolute;
-    width: 38px;
-    height: 28px;
-    background: #111;
     left: 50%;
     transform: translateX(-50%);
+    background: #111;
 }
 
-/* Istirahat 4 ketuk */
+/* 4 ketuk */
+
 .rest-4 .rest-bentuk {
-    top: 50px;
+    width: 40px;
+    height: 27px;
+    top: 52px;
 }
 
-/* Istirahat 2 ketuk */
+/* 2 ketuk */
+
 .rest-2 .rest-bentuk {
-    top: 25px;
+    width: 40px;
+    height: 27px;
+    top: 27px;
 }
 
-/* Garis pembeda */
-.rest-garis {
-    position: absolute;
-    width: 70px;
+/*
+   Garis horizontal yang membedakan
+   istirahat 4 dan 2 ketuk
+*/
+
+.rest .garis-horizontal {
+    width: 68px;
     height: 4px;
-    background: #111;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 3px;
 }
 
-/* Garis istirahat 4 ketuk */
-.rest-4 .rest-garis {
-    top: 64px;
+.rest-4 .garis-horizontal {
+    top: 65px;
 }
 
-/* Garis istirahat 2 ketuk */
-.rest-2 .rest-garis {
-    top: 39px;
+.rest-2 .garis-horizontal {
+    top: 40px;
 }
 
-/* Istirahat 1 ketuk */
+
+/* 1 ketuk */
 
 .rest-1 .rest-bentuk {
-    width: 30px;
-    height: 45px;
-    top: 28px;
-    transform: translateX(-50%) rotate(25deg);
+    width: 29px;
+    height: 47px;
+    top: 31px;
+    transform:
+        translateX(-50%)
+        rotate(25deg);
 }
 
-.rest-1 .rest-garis {
-    top: 48px;
+.rest-1 .garis-horizontal {
+    top: 53px;
 }
 
-/* Istirahat setengah ketuk */
+
+/* 1/2 ketuk */
 
 .rest-05 .rest-bentuk {
     width: 25px;
-    height: 38px;
-    top: 34px;
-    transform: translateX(-50%) rotate(-25deg);
+    height: 40px;
+    top: 35px;
+    transform:
+        translateX(-50%)
+        rotate(-25deg);
 }
 
-.rest-05 .rest-garis {
-    top: 49px;
+.rest-05 .garis-horizontal {
+    top: 53px;
 }
+
 
 /* =====================================================
-   GARIS PEMBATAS BIRAMA
+   STATUS
 ===================================================== */
 
-.garis-birama {
-    width: 4px;
-    height: 105px;
-    background: #111;
-    margin-left: 5px;
+#status {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 5;
+    pointer-events: none;
 }
 
+.benar {
+    color: #159447;
+}
+
+.salah {
+    color: #d11;
+}
+
+
 /* =====================================================
-   BAGIAN BAWAH
+   BAGIAN TOMBOL
 ===================================================== */
 
 #bagianKetuk {
-    width: 100%;
     height: 50vh;
+    width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     position: relative;
 }
+
 
 /* =====================================================
    TOMBOL BESAR
 ===================================================== */
 
 #tombolBesar {
-    width: min(62vw, 280px);
-    height: min(62vw, 280px);
+    width: min(65vw, 300px);
+    height: min(65vw, 300px);
+
     border-radius: 50%;
     border: none;
+
     background: #eeeeee;
 
     box-shadow:
-        0 8px 20px rgba(0,0,0,0.18),
+        0 9px 22px rgba(0,0,0,0.18),
         inset 0 -6px 0 rgba(0,0,0,0.08);
 
     touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     transition:
         transform 0.05s,
-        background 0.08s;
+        background 0.06s;
 }
 
 #tombolBesar.ditekan {
-    transform: scale(0.94);
-    background: #cccccc;
+    transform: scale(0.93);
+    background: #d2d2d2;
 }
+
 
 /* =====================================================
-   TOMBOL KECIL
+   FLASH
 ===================================================== */
-
-#tombolKecil {
-    position: absolute;
-
-    width: min(22vw, 95px);
-    height: min(22vw, 95px);
-
-    border-radius: 50%;
-    border: none;
-
-    background: #eeeeee;
-
-    box-shadow:
-        0 5px 12px rgba(0,0,0,0.18),
-        inset 0 -4px 0 rgba(0,0,0,0.08);
-
-    bottom: 12%;
-    right: 12%;
-
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-/* =====================================================
-   FEEDBACK
-===================================================== */
-
-#status {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 25px;
-    font-weight: bold;
-    pointer-events: none;
-}
-
-.benar {
-    color: #19a34a;
-}
-
-.salah {
-    color: #d22;
-}
 
 .flash-benar {
-    animation: flashBenar 0.18s;
+    animation: benar 0.15s;
 }
 
 .flash-salah {
-    animation: flashSalah 0.18s;
+    animation: salah 0.15s;
 }
 
-@keyframes flashBenar {
+@keyframes benar {
     50% {
-        background: #c7ffc7;
+        background: #c9ffc9;
     }
 }
 
-@keyframes flashSalah {
+@keyframes salah {
     50% {
-        background: #ffc7c7;
+        background: #ffc9c9;
     }
 }
 
 </style>
 </head>
+
 
 <body>
 
@@ -458,216 +460,10 @@ body {
 
     <button id="tombolBesar"></button>
 
-    <button id="tombolKecil"></button>
-
 </div>
 
 
 <script>
-
-/* =====================================================
-   AUDIO E4
-===================================================== */
-
-let audioContext = null;
-let oscillator = null;
-let gainNode = null;
-
-
-/*
-   Membuat suara E4 = sekitar 329.63 Hz
-*/
-
-function mulaiSuaraE4() {
-
-    if (!audioContext) {
-
-        audioContext =
-            new (window.AudioContext ||
-                 window.webkitAudioContext)();
-    }
-
-    if (audioContext.state === "suspended") {
-        audioContext.resume();
-    }
-
-
-    /*
-       Setiap kali tombol besar ditekan,
-       buat petikan baru.
-    */
-
-    const sekarang =
-        audioContext.currentTime;
-
-
-    /*
-       Jika suara lama masih ada,
-       hentakkan suara lama terlebih dahulu.
-    */
-
-    if (gainNode) {
-
-        gainNode.gain.cancelScheduledValues(sekarang);
-
-        gainNode.gain.setValueAtTime(
-            gainNode.gain.value,
-            sekarang
-        );
-
-        gainNode.gain.exponentialRampToValueAtTime(
-            0.0001,
-            sekarang + 0.015
-        );
-    }
-
-
-    oscillator =
-        audioContext.createOscillator();
-
-    gainNode =
-        audioContext.createGain();
-
-
-    /*
-       E4
-    */
-
-    oscillator.frequency.setValueAtTime(
-        329.63,
-        sekarang
-    );
-
-    oscillator.type = "triangle";
-
-
-    /*
-       Volume awal
-    */
-
-    gainNode.gain.setValueAtTime(
-        0.0001,
-        sekarang
-    );
-
-    gainNode.gain.exponentialRampToValueAtTime(
-        0.65,
-        sekarang + 0.008
-    );
-
-
-    /*
-       Suara bertahan sampai tombol kecil
-       ditekan.
-    */
-
-    oscillator.connect(gainNode);
-
-    gainNode.connect(
-        audioContext.destination
-    );
-
-    oscillator.start();
-
-}
-
-
-/* =====================================================
-   BERHENTIKAN SUARA
-===================================================== */
-
-function berhentiSuara() {
-
-    if (!audioContext || !gainNode || !oscillator)
-        return;
-
-    const sekarang =
-        audioContext.currentTime;
-
-    gainNode.gain.cancelScheduledValues(
-        sekarang
-    );
-
-    gainNode.gain.setValueAtTime(
-        gainNode.gain.value,
-        sekarang
-    );
-
-    gainNode.gain.exponentialRampToValueAtTime(
-        0.0001,
-        sekarang + 0.03
-    );
-
-    oscillator.stop(
-        sekarang + 0.04
-    );
-
-    oscillator = null;
-    gainNode = null;
-}
-
-
-/* =====================================================
-   TOMBOL BESAR
-===================================================== */
-
-const tombolBesar =
-    document.getElementById("tombolBesar");
-
-tombolBesar.addEventListener(
-    "pointerdown",
-    function(e) {
-
-        e.preventDefault();
-
-        mulaiSuaraE4();
-
-        tombolBesar.classList.add(
-            "ditekan"
-        );
-
-        prosesKetukan();
-    }
-);
-
-tombolBesar.addEventListener(
-    "pointerup",
-    function() {
-
-        tombolBesar.classList.remove(
-            "ditekan"
-        );
-    }
-);
-
-tombolBesar.addEventListener(
-    "pointercancel",
-    function() {
-
-        tombolBesar.classList.remove(
-            "ditekan"
-        );
-    }
-);
-
-
-/* =====================================================
-   TOMBOL KECIL = STOP
-===================================================== */
-
-const tombolKecil =
-    document.getElementById("tombolKecil");
-
-tombolKecil.addEventListener(
-    "pointerdown",
-    function(e) {
-
-        e.preventDefault();
-
-        berhentiSuara();
-    }
-);
-
 
 /* =====================================================
    PENGATURAN TEMPO
@@ -677,7 +473,303 @@ const BPM = 60;
 
 const BEAT = 60000 / BPM;
 
-const TOLERANSI = 150;
+/*
+   Toleransi ± 1/6 detik
+   = sekitar 0,167 detik
+*/
+
+const TOLERANSI = 167;
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+let audioContext = null;
+
+let pianoVoices = [];
+
+let metronomAktif = false;
+
+let metronomTimer = null;
+
+let waktuMetronom = 0;
+
+
+/* =====================================================
+   MEMBUAT AUDIO CONTEXT
+===================================================== */
+
+function siapkanAudio() {
+
+    if (!audioContext) {
+
+        audioContext =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+    }
+
+    if (audioContext.state === "suspended") {
+        audioContext.resume();
+    }
+}
+
+
+/* =====================================================
+   SUARA PIANO E4
+===================================================== */
+
+/*
+   E4 = 329.63 Hz
+
+   Dibuat menggunakan beberapa harmonik
+   agar terdengar lebih seperti piano
+   daripada suara oscillator tunggal.
+*/
+
+function pianoE4() {
+
+    siapkanAudio();
+
+    const now =
+        audioContext.currentTime;
+
+
+    /*
+       Jika tombol besar ditekan lagi,
+       buat serangan/petikan baru.
+    */
+
+    const master =
+        audioContext.createGain();
+
+    master.gain.setValueAtTime(
+        0.0001,
+        now
+    );
+
+    master.gain.exponentialRampToValueAtTime(
+        0.45,
+        now + 0.008
+    );
+
+    master.gain.exponentialRampToValueAtTime(
+        0.18,
+        now + 0.20
+    );
+
+    master.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + 2.8
+    );
+
+    master.connect(
+        audioContext.destination
+    );
+
+
+    /*
+       Beberapa harmonik piano.
+    */
+
+    const harmonics = [
+        [1, 1.00],
+        [2, 0.38],
+        [3, 0.18],
+        [4, 0.09],
+        [5, 0.045]
+    ];
+
+
+    harmonics.forEach(item => {
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.setValueAtTime(
+            329.63 * item[0],
+            now
+        );
+
+        gain.gain.setValueAtTime(
+            item[1],
+            now
+        );
+
+        oscillator.connect(gain);
+        gain.connect(master);
+
+        oscillator.start(now);
+
+        oscillator.stop(now + 2.9);
+
+        pianoVoices.push(
+            oscillator
+        );
+    });
+}
+
+
+/* =====================================================
+   HENTIKAN SUARA PIANO
+===================================================== */
+
+function hentikanPiano() {
+
+    if (!audioContext)
+        return;
+
+    pianoVoices.forEach(voice => {
+
+        try {
+            voice.stop(
+                audioContext.currentTime
+                + 0.01
+            );
+        } catch (e) {}
+
+    });
+
+    pianoVoices = [];
+}
+
+
+/* =====================================================
+   METRONOM KAYU
+===================================================== */
+
+/*
+   Ketukan pertama:
+   suara lebih tinggi dan lebih kuat.
+
+   Ketukan lainnya:
+   suara kayu biasa.
+*/
+
+function bunyiMetronom(aksen) {
+
+    siapkanAudio();
+
+    const now =
+        audioContext.currentTime;
+
+
+    /*
+       Dua oscillator pendek dengan
+       frekuensi berbeda memberikan
+       karakter "klik kayu".
+    */
+
+    const osc =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+
+    osc.type = "triangle";
+
+    if (aksen) {
+
+        osc.frequency.setValueAtTime(
+            1800,
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            900,
+            now + 0.045
+        );
+
+        gain.gain.setValueAtTime(
+            0.42,
+            now
+        );
+
+    } else {
+
+        osc.frequency.setValueAtTime(
+            1200,
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            650,
+            now + 0.045
+        );
+
+        gain.gain.setValueAtTime(
+            0.25,
+            now
+        );
+    }
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + 0.055
+    );
+
+    osc.connect(gain);
+    gain.connect(
+        audioContext.destination
+    );
+
+    osc.start(now);
+
+    osc.stop(now + 0.06);
+}
+
+
+/* =====================================================
+   MEMULAI METRONOM
+===================================================== */
+
+function mulaiMetronom() {
+
+    if (metronomAktif)
+        return;
+
+    siapkanAudio();
+
+    metronomAktif = true;
+
+    waktuMetronom =
+        performance.now();
+
+    let ketukan = 0;
+
+
+    function tick() {
+
+        if (!metronomAktif)
+            return;
+
+        bunyiMetronom(
+            ketukan === 0
+        );
+
+        ketukan++;
+
+        if (ketukan >= 4) {
+            ketukan = 0;
+        }
+
+        metronomTimer =
+            setTimeout(
+                tick,
+                BEAT
+            );
+    }
+
+    tick();
+}
 
 
 /* =====================================================
@@ -687,36 +779,49 @@ const TOLERANSI = 150;
 const JENIS = {
 
     whole: {
-        durasi: 4
+        durasi: 4,
+        kelas: "not not-4"
     },
 
     half: {
-        durasi: 2
+        durasi: 2,
+        kelas: "not not-2"
     },
 
     quarter: {
-        durasi: 1
+        durasi: 1,
+        kelas: "not not-1 hitam"
     },
 
     eighth: {
-        durasi: 0.5
+        durasi: 0.5,
+        kelas: "not not-05 hitam"
     },
 
     wholeRest: {
-        durasi: 4
+        durasi: 4,
+        rest: true,
+        kelas: "rest rest-4"
     },
 
     halfRest: {
-        durasi: 2
+        durasi: 2,
+        rest: true,
+        kelas: "rest rest-2"
     },
 
     quarterRest: {
-        durasi: 1
+        durasi: 1,
+        rest: true,
+        kelas: "rest rest-1"
     },
 
     eighthRest: {
-        durasi: 0.5
+        durasi: 0.5,
+        rest: true,
+        kelas: "rest rest-05"
     }
+
 };
 
 
@@ -735,6 +840,7 @@ function buatBirama() {
         let pilihan = [];
 
         if (sisa >= 4) {
+
             pilihan.push(
                 "whole",
                 "wholeRest"
@@ -742,6 +848,7 @@ function buatBirama() {
         }
 
         if (sisa >= 2) {
+
             pilihan.push(
                 "half",
                 "halfRest"
@@ -749,6 +856,7 @@ function buatBirama() {
         }
 
         if (sisa >= 1) {
+
             pilihan.push(
                 "quarter",
                 "quarterRest"
@@ -756,11 +864,13 @@ function buatBirama() {
         }
 
         if (sisa >= 0.5) {
+
             pilihan.push(
                 "eighth",
                 "eighthRest"
             );
         }
+
 
         const jenis =
             pilihan[
@@ -770,28 +880,31 @@ function buatBirama() {
                 )
             ];
 
+
         hasil.push(jenis);
 
-        sisa -= JENIS[jenis].durasi;
+        sisa -=
+            JENIS[jenis].durasi;
 
         sisa =
             Math.round(sisa * 10) / 10;
     }
 
+
     /*
-       Kadang-kadang dua not setengah ketuk
-       disambungkan.
+       Kadang dua not 1/2 ketuk
+       yang berdampingan disambung.
     */
 
-    return gabungkanEighth(hasil);
+    return sambungkanEighth(hasil);
 }
 
 
 /* =====================================================
-   MENYAMBUNG DUA NOT 1/2 KETUK
+   SAMBUNG DUA NOT 1/2 KETUK
 ===================================================== */
 
-function gabungkanEighth(data) {
+function sambungkanEighth(data) {
 
     const hasil = [];
 
@@ -805,13 +918,17 @@ function gabungkanEighth(data) {
             Math.random() < 0.5
         ) {
 
-            hasil.push("connectedEighth");
+            hasil.push(
+                "connectedEighth"
+            );
 
             i += 2;
 
         } else {
 
-            hasil.push(data[i]);
+            hasil.push(
+                data[i]
+            );
 
             i++;
         }
@@ -822,7 +939,7 @@ function gabungkanEighth(data) {
 
 
 /* =====================================================
-   DATA BIRAMA
+   DATA DUA BIRAMA
 ===================================================== */
 
 let birama = [
@@ -830,12 +947,9 @@ let birama = [
     buatBirama()
 ];
 
-let biramaAktif = 0;
-let notAktif = 0;
-
 
 /* =====================================================
-   MENAMPILKAN BIRAMA
+   MENAMPILKAN SIMBOL
 ===================================================== */
 
 function tampilkanBirama(index) {
@@ -846,6 +960,7 @@ function tampilkanBirama(index) {
         );
 
     tempat.innerHTML = "";
+
 
     const container =
         document.createElement("div");
@@ -859,109 +974,117 @@ function tampilkanBirama(index) {
         let elemen;
 
 
-        /* Dua not setengah ketuk disambung */
+        /* ---------------------------------------------
+           DUA NOT 1/2 KETUK TERSAMBUNG
+        --------------------------------------------- */
 
-        if (jenis === "connectedEighth") {
-
-            elemen =
-                document.createElement("div");
-
-            elemen.className =
-                "dua-setengah";
-
-            elemen.innerHTML = `
-                <div class="not-kecil">
-                    <div class="kepala"></div>
-                    <div class="batang"></div>
-                </div>
-
-                <div class="not-kecil">
-                    <div class="kepala"></div>
-                    <div class="batang"></div>
-                </div>
-
-                <div class="penghubung"></div>
-                <div class="penghubung2"></div>
-            `;
-
-        }
-
-
-        /* Not biasa */
-
-        else if (
-            jenis === "whole" ||
-            jenis === "half" ||
-            jenis === "quarter" ||
-            jenis === "eighth"
+        if (
+            jenis ===
+            "connectedEighth"
         ) {
 
             elemen =
-                document.createElement("div");
-
-            elemen.className =
-                "simbol not-" +
-                (
-                    jenis === "whole"
-                    ? "4"
-                    : jenis === "half"
-                    ? "2"
-                    : jenis === "quarter"
-                    ? "1"
-                    : "05"
+                document.createElement(
+                    "div"
                 );
 
+            elemen.className =
+                "dua-eighth";
+
             elemen.innerHTML = `
-                <div class="kepala"></div>
-                <div class="batang"></div>
-                <div class="bendera"></div>
-                <div class="garis-not"></div>
+
+                <div class="eighth-kecil kiri">
+                    <div class="kepala"></div>
+                    <div class="batang"></div>
+                </div>
+
+                <div class="eighth-kecil kanan">
+                    <div class="kepala"></div>
+                    <div class="batang"></div>
+                </div>
+
+                <div class="beam"></div>
+                <div class="beam2"></div>
             `;
 
         }
 
 
-        /* Istirahat */
+        /* ---------------------------------------------
+           NOT BIASA
+        --------------------------------------------- */
+
+        else if (
+            !JENIS[jenis].rest
+        ) {
+
+            elemen =
+                document.createElement(
+                    "div"
+                );
+
+            elemen.className =
+                JENIS[jenis].kelas;
+
+            elemen.innerHTML = `
+
+                <div class="kepala"></div>
+
+                <div class="batang"></div>
+
+                <div class="bendera"></div>
+
+                <div class="garis-horizontal"></div>
+            `;
+        }
+
+
+        /* ---------------------------------------------
+           ISTIRAHAT
+        --------------------------------------------- */
 
         else {
 
             elemen =
-                document.createElement("div");
-
-            const jumlah =
-                jenis === "wholeRest"
-                ? "4"
-                : jenis === "halfRest"
-                ? "2"
-                : jenis === "quarterRest"
-                ? "1"
-                : "05";
+                document.createElement(
+                    "div"
+                );
 
             elemen.className =
-                "istirahat rest-" +
-                jumlah;
+                JENIS[jenis].kelas;
 
             elemen.innerHTML = `
+
                 <div class="rest-bentuk"></div>
-                <div class="rest-garis"></div>
+
+                <div class="garis-horizontal"></div>
             `;
         }
 
 
-        container.appendChild(elemen);
+        container.appendChild(
+            elemen
+        );
 
     });
 
 
     const garis =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     garis.className =
         "garis-birama";
 
-    container.appendChild(garis);
+    container.appendChild(
+        garis
+    );
 
-    tempat.appendChild(container);
+
+    tempat.appendChild(
+        container
+    );
 }
 
 
@@ -974,218 +1097,279 @@ tampilkanBirama(1);
 
 
 /* =====================================================
-   SISTEM KETUKAN
+   SISTEM WAKTU LATIHAN
 ===================================================== */
 
-let waktuKetukSebelumnya =
-    performance.now();
+let biramaAktif = 0;
 
-let ketukanPertama =
-    true;
+let notAktif = 0;
 
+let waktuMulaiLatihan = null;
 
-/*
-   Setiap tekanan tombol besar dianggap
-   sebagai satu ketukan/petikan.
-
-   Untuk not panjang, beberapa ketukan
-   harus dilakukan selama durasinya.
-*/
-
-let ketukanDalamNot = 0;
-
-let waktuMulaiNot =
-    performance.now();
+let jadwalKetukan = [];
 
 
-function prosesKetukan() {
+/* =====================================================
+   BUAT JADWAL KETUKAN
+===================================================== */
 
-    const jenis =
-        birama[biramaAktif][notAktif];
+function buatJadwal() {
 
-    const data =
-        JENIS[
-            jenis === "connectedEighth"
-            ? "eighth"
-            : jenis
-        ];
+    jadwalKetukan = [];
+
+    let waktu = 0;
 
 
     /*
-       Istirahat tidak boleh diketuk.
+       Buat jadwal berdasarkan not
+       pada dua birama.
     */
 
-    if (jenis.includes("Rest")) {
+    for (
+        let b = 0;
+        b < 2;
+        b++
+    ) {
 
-        tampilkanSalah();
+        for (
+            let n = 0;
+            n < birama[b].length;
+            n++
+        ) {
 
+            const jenis =
+                birama[b][n];
+
+
+            /*
+               Rest tidak mempunyai
+               ketukan yang harus ditekan.
+            */
+
+            if (
+                !jenis.includes("Rest")
+            ) {
+
+                jadwalKetukan.push({
+
+                    waktu: waktu,
+
+                    birama: b,
+
+                    not: n
+
+                });
+            }
+
+
+            waktu +=
+                JENIS[
+                    jenis ===
+                    "connectedEighth"
+                    ? "eighth"
+                    : jenis
+                ].durasi;
+        }
+    }
+}
+
+
+/* =====================================================
+   MULAI LATIHAN
+===================================================== */
+
+function mulaiLatihan() {
+
+    if (
+        waktuMulaiLatihan !== null
+    ) {
         return;
     }
 
-
-    const sekarang =
+    waktuMulaiLatihan =
         performance.now();
 
+    buatJadwal();
 
-    /*
-       Ketukan pertama
-    */
+    mulaiMetronom();
+}
 
-    if (ketukanPertama) {
 
-        ketukanPertama = false;
+/* =====================================================
+   CARI KETUKAN YANG SEHARUSNYA
+===================================================== */
 
-        waktuKetukSebelumnya =
-            sekarang;
+function cariKetukanTerdekat(
+    waktuSekarang
+) {
 
-        waktuMulaiNot =
-            sekarang;
+    let terbaik = null;
 
-        ketukanDalamNot = 1;
+    let jarakTerbaik =
+        Infinity;
 
-    } else {
 
-        const jarak =
-            sekarang -
-            waktuKetukSebelumnya;
+    jadwalKetukan.forEach(
+        item => {
+
+            const jarak =
+                Math.abs(
+                    waktuSekarang -
+                    item.waktu
+                );
+
+            if (
+                jarak < jarakTerbaik
+            ) {
+
+                jarakTerbaik = jarak;
+
+                terbaik = item;
+            }
+        }
+    );
+
+
+    return {
+
+        item: terbaik,
+
+        jarak: jarakTerbaik
+    };
+}
+
+
+/* =====================================================
+   PROSES TEKANAN TOMBOL
+===================================================== */
+
+const tombolBesar =
+    document.getElementById(
+        "tombolBesar"
+    );
+
+
+tombolBesar.addEventListener(
+    "pointerdown",
+    function(e) {
+
+        e.preventDefault();
 
 
         /*
-           60 BPM = 1000 ms per ketuk
+           Suara piano selalu muncul
+           ketika tombol besar ditekan.
         */
 
+        pianoE4();
+
+
+        tombolBesar.classList.add(
+            "ditekan"
+        );
+
+
+        mulaiLatihan();
+
+
+        const sekarang =
+            (
+                performance.now() -
+                waktuMulaiLatihan
+            );
+
+
+        const hasil =
+            cariKetukanTerdekat(
+                sekarang
+            );
+
+
         if (
-            Math.abs(
-                jarak - BEAT
-            ) <= TOLERANSI
+            !hasil.item ||
+            hasil.jarak >
+            TOLERANSI
         ) {
-
-            ketukanDalamNot++;
-
-            waktuKetukSebelumnya =
-                sekarang;
-
-        } else {
 
             tampilkanSalah();
 
             return;
         }
-    }
 
 
-    /*
-       Tentukan jumlah ketukan
-       yang diperlukan.
-    */
-
-    const jumlahKetuk =
-        data.durasi;
-
-
-    /*
-       Not 1/2 ketuk:
-       dua not dimainkan pada setiap
-       satu ketuk.
-    */
-
-    if (jumlahKetuk === 0.5) {
-
-        if (
-            ketukanDalamNot >= 1
-        ) {
-
-            tampilkanBenar();
-
-            lanjutNot();
-        }
-
-        return;
-    }
-
-
-    /*
-       Not 1, 2 atau 4 ketuk.
-    */
-
-    if (
-        ketukanDalamNot >=
-        jumlahKetuk
-    ) {
+        /*
+           Ketukan benar.
+        */
 
         tampilkanBenar();
 
-        lanjutNot();
+
+        /*
+           Hapus ketukan yang sudah
+           berhasil dimainkan agar
+           tidak bisa dinilai dua kali.
+        */
+
+        const index =
+            jadwalKetukan.indexOf(
+                hasil.item
+            );
+
+        if (index !== -1) {
+
+            jadwalKetukan.splice(
+                index,
+                1
+            );
+        }
+
+
+        /*
+           Jika seluruh jadwal dua birama
+           selesai, geser.
+        */
+
+        if (
+            jadwalKetukan.length === 0
+        ) {
+
+            geserBirama();
+        }
+
     }
-}
+);
 
 
-/* =====================================================
-   LANJUT NOT
-===================================================== */
+tombolBesar.addEventListener(
+    "pointerup",
+    function() {
 
-function lanjutNot() {
-
-    ketukanDalamNot = 0;
-
-    notAktif++;
-
-    if (
-        notAktif >=
-        birama[biramaAktif].length
-    ) {
-
-        selesaiBirama();
-
-        return;
-    }
-
-
-    /*
-       Jika not berikutnya adalah istirahat,
-       jalankan otomatis sesuai durasinya.
-    */
-
-    const jenisBerikutnya =
-        birama[biramaAktif][notAktif];
-
-    if (
-        jenisBerikutnya.includes("Rest")
-    ) {
-
-        const durasi =
-            JENIS[jenisBerikutnya].durasi
-            * BEAT;
-
-        setTimeout(
-            function() {
-
-                lanjutNot();
-
-            },
-            durasi
+        tombolBesar.classList.remove(
+            "ditekan"
         );
     }
-}
+);
+
+
+tombolBesar.addEventListener(
+    "pointercancel",
+    function() {
+
+        tombolBesar.classList.remove(
+            "ditekan"
+        );
+    }
+);
 
 
 /* =====================================================
-   SELESAI BIRAMA
+   GESER BIRAMA
 ===================================================== */
 
-function selesaiBirama() {
-
-    /*
-       Bawah naik ke atas.
-    */
+function geserBirama() {
 
     birama[0] =
         birama[1];
-
-
-    /*
-       Buat birama baru.
-    */
 
     birama[1] =
         buatBirama();
@@ -1195,13 +1379,55 @@ function selesaiBirama() {
     tampilkanBirama(1);
 
 
-    biramaAktif = 0;
-    notAktif = 0;
+    waktuMulaiLatihan =
+        performance.now();
 
-    ketukanPertama = true;
-
-    ketukanDalamNot = 0;
+    buatJadwal();
 }
+
+
+/* =====================================================
+   SEMUA AREA KECUALI TOMBOL BESAR
+   MENGHENTIKAN SUARA PIANO
+===================================================== */
+
+document.addEventListener(
+    "pointerdown",
+    function(e) {
+
+        if (
+            !tombolBesar.contains(
+                e.target
+            )
+        ) {
+
+            hentikanPiano();
+        }
+    },
+    true
+);
+
+
+/*
+   Menyentuh layar di luar tombol
+   juga menghentikan piano.
+*/
+
+document.addEventListener(
+    "touchstart",
+    function(e) {
+
+        if (
+            !tombolBesar.contains(
+                e.target
+            )
+        ) {
+
+            hentikanPiano();
+        }
+    },
+    true
+);
 
 
 /* =====================================================
@@ -1211,10 +1437,15 @@ function selesaiBirama() {
 function tampilkanBenar() {
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     status.textContent = "✓";
-    status.className = "benar";
+
+    status.className =
+        "benar";
+
 
     document.body.classList.remove(
         "flash-salah"
@@ -1226,26 +1457,36 @@ function tampilkanBenar() {
         "flash-benar"
     );
 
-    setTimeout(() => {
 
-        status.textContent = "";
-        status.className = "";
+    setTimeout(
+        function() {
 
-        document.body.classList.remove(
-            "flash-benar"
-        );
+            status.textContent = "";
 
-    }, 180);
+            status.className = "";
+
+            document.body.classList.remove(
+                "flash-benar"
+            );
+
+        },
+        150
+    );
 }
 
 
 function tampilkanSalah() {
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     status.textContent = "✕";
-    status.className = "salah";
+
+    status.className =
+        "salah";
+
 
     document.body.classList.remove(
         "flash-benar"
@@ -1257,17 +1498,34 @@ function tampilkanSalah() {
         "flash-salah"
     );
 
-    setTimeout(() => {
 
-        status.textContent = "";
-        status.className = "";
+    setTimeout(
+        function() {
 
-        document.body.classList.remove(
-            "flash-salah"
-        );
+            status.textContent = "";
 
-    }, 220);
+            status.className = "";
+
+            document.body.classList.remove(
+                "flash-salah"
+            );
+
+        },
+        180
+    );
 }
+
+
+/* =====================================================
+   MENCEGAH MENU KLIK KANAN
+===================================================== */
+
+document.addEventListener(
+    "contextmenu",
+    function(e) {
+        e.preventDefault();
+    }
+);
 
 </script>
 
