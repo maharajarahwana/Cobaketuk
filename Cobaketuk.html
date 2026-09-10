@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Ketukan</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: white;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   BAGIAN ATAS
+========================= */
+
+#bagianNot {
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 15px;
+}
+
+.birama {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.birama:last-child {
+    border-bottom: none;
+}
+
+.not {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.simbol {
+    font-family: "Noto Music", "Bravura", "Segoe UI Symbol", serif;
+    font-size: clamp(48px, 12vw, 90px);
+    line-height: 1;
+    min-width: 55px;
+    text-align: center;
+}
+
+.garis-birama {
+    height: 100px;
+    width: 2px;
+    background: #222;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* =========================
+   BAGIAN BAWAH
+========================= */
+
+#bagianKetuk {
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Tombol ketuk */
+
+#tombolKetuk {
+    width: min(65vw, 300px);
+    height: min(65vw, 300px);
+    max-height: 300px;
+    max-width: 300px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #eeeeee;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.18),
+        inset 0 -5px 0 rgba(0,0,0,0.08);
+
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    transition:
+        transform 0.05s,
+        background 0.1s;
+}
+
+#tombolKetuk:active,
+#tombolKetuk.ditekan {
+    transform: scale(0.94);
+    background: #cccccc;
+}
+
+/* Feedback */
+
+#status {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+#status.benar {
+    color: #19a34a;
+}
+
+#status.salah {
+    color: #d22;
+}
+
+/* Flash */
+
+.flash-benar {
+    animation: flashBenar 0.18s;
+}
+
+.flash-salah {
+    animation: flashSalah 0.18s;
+}
+
+@keyframes flashBenar {
+    50% {
+        background: #b9ffb9;
+    }
+}
+
+@keyframes flashSalah {
+    50% {
+        background: #ffb9b9;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     DUA BIRAMA
+========================= -->
+
+<div id="bagianNot">
+
+    <div class="birama" id="birama0"></div>
+
+    <div class="birama" id="birama1"></div>
+
+</div>
+
+
+<!-- =========================
+     TOMBOL KETUK
+========================= -->
+
+<div id="bagianKetuk">
+
+    <div id="status"></div>
+
+    <button id="tombolKetuk"></button>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PENGATURAN
+========================================================= */
+
+const BPM = 60;
+
+// 1 ketuk = 1000 ms pada 60 BPM
+const BEAT = 60000 / BPM;
+
+// Toleransi ± 0,15 detik
+const TOLERANSI = 150;
+
+
+/* =========================================================
+   JENIS NOT
+========================================================= */
+
+const JENIS = {
+
+    whole: {
+        durasi: 4,
+        simbol: "𝅝"
+    },
+
+    half: {
+        durasi: 2,
+        simbol: "𝅗𝅥"
+    },
+
+    quarter: {
+        durasi: 1,
+        simbol: "♩"
+    },
+
+    eighth: {
+        durasi: 0.5,
+        simbol: "♪"
+    },
+
+    wholeRest: {
+        durasi: 4,
+        simbol: "𝄻"
+    },
+
+    halfRest: {
+        durasi: 2,
+        simbol: "𝄼"
+    },
+
+    quarterRest: {
+        durasi: 1,
+        simbol: "𝄽"
+    },
+
+    eighthRest: {
+        durasi: 0.5,
+        simbol: "𝄾"
+    }
+};
+
+
+/* =========================================================
+   MEMBUAT BIRAMA ACAK
+========================================================= */
+
+function buatBirama() {
+
+    const hasil = [];
+
+    let sisa = 4;
+
+    while (sisa > 0) {
+
+        let pilihan = [];
+
+        // Not/rest 4 ketuk
+        if (sisa >= 4) {
+            pilihan.push("whole", "wholeRest");
+        }
+
+        // Not/rest 2 ketuk
+        if (sisa >= 2) {
+            pilihan.push("half", "halfRest");
+        }
+
+        // Not/rest 1 ketuk
+        if (sisa >= 1) {
+            pilihan.push("quarter", "quarterRest");
+        }
+
+        // Not/rest 1/2 ketuk
+        if (sisa >= 0.5) {
+            pilihan.push("eighth", "eighthRest");
+        }
+
+        const jenis =
+            pilihan[Math.floor(Math.random() * pilihan.length)];
+
+        hasil.push(jenis);
+
+        sisa -= JENIS[jenis].durasi;
+
+        // Menghindari error floating point
+        sisa = Math.round(sisa * 10) / 10;
+    }
+
+    return hasil;
+}
+
+
+/* =========================================================
+   DATA BIRAMA
+========================================================= */
+
+let birama = [
+    buatBirama(),
+    buatBirama()
+];
+
+
+/* =========================================================
+   MENAMPILKAN BIRAMA
+========================================================= */
+
+function tampilkanBirama(index) {
+
+    const tempat =
+        document.getElementById("birama" + index);
+
+    tempat.innerHTML = "";
+
+    const notContainer =
+        document.createElement("div");
+
+    notContainer.className = "not";
+
+    birama[index].forEach(jenis => {
+
+        const span =
+            document.createElement("span");
+
+        span.className = "simbol";
+
+        span.textContent =
+            JENIS[jenis].simbol;
+
+        notContainer.appendChild(span);
+    });
+
+    const garis =
+        document.createElement("div");
+
+    garis.className = "garis-birama";
+
+    notContainer.appendChild(garis);
+
+    tempat.appendChild(notContainer);
+}
+
+
+/* =========================================================
+   TAMPILKAN AWAL
+========================================================= */
+
+tampilkanBirama(0);
+tampilkanBirama(1);
+
+
+/* =========================================================
+   SISTEM LATIHAN
+========================================================= */
+
+let biramaAktif = 0;
+let notAktif = 0;
+
+let sedangDitekan = false;
+
+let waktuMulaiTekan = 0;
+let waktuTargetMulai = performance.now();
+
+let timerNot;
+
+
+/* =========================================================
+   MEMULAI NOT
+========================================================= */
+
+function mulaiNot() {
+
+    const jenis =
+        birama[biramaAktif][notAktif];
+
+    const data =
+        JENIS[jenis];
+
+    waktuTargetMulai =
+        performance.now();
+
+    sedangDitekan = false;
+
+    tombol.classList.remove("ditekan");
+
+    /*
+       Jika REST:
+       pengguna tidak perlu menekan tombol.
+       Kita menunggu durasi rest secara otomatis.
+    */
+
+    if (jenis.includes("Rest")) {
+
+        timerNot = setTimeout(() => {
+
+            selesaiNotRest();
+
+        }, data.durasi * BEAT);
+
+    }
+
+}
+
+
+/* =========================================================
+   SELESAI REST
+========================================================= */
+
+function selesaiNotRest() {
+
+    if (sedangDitekan) {
+        tampilkanSalah();
+    } else {
+        lanjutNot();
+    }
+}
+
+
+/* =========================================================
+   LANJUT KE NOT BERIKUTNYA
+========================================================= */
+
+function lanjutNot() {
+
+    notAktif++;
+
+    if (notAktif >= birama[biramaAktif].length) {
+
+        selesaiBirama();
+
+        return;
+    }
+
+    mulaiNot();
+}
+
+
+/* =========================================================
+   SELESAI SATU BIRAMA
+========================================================= */
+
+function selesaiBirama() {
+
+    /*
+       Jika birama atas selesai:
+
+       birama bawah -> naik ke atas
+       birama baru -> muncul di bawah
+    */
+
+    birama[0] = birama[1];
+
+    birama[1] = buatBirama();
+
+    tampilkanBirama(0);
+    tampilkanBirama(1);
+
+    biramaAktif = 0;
+    notAktif = 0;
+
+    mulaiNot();
+}
+
+
+/* =========================================================
+   TEKAN TOMBOL
+========================================================= */
+
+const tombol =
+    document.getElementById("tombolKetuk");
+
+const status =
+    document.getElementById("status");
+
+
+function tekan() {
+
+    if (sedangDitekan)
+        return;
+
+    const jenis =
+        birama[biramaAktif][notAktif];
+
+    /*
+       Tidak boleh menekan ketika rest
+    */
+
+    if (jenis.includes("Rest")) {
+
+        tampilkanSalah();
+
+        sedangDitekan = true;
+
+        return;
+    }
+
+
+    sedangDitekan = true;
+
+    waktuMulaiTekan =
+        performance.now();
+
+    tombol.classList.add("ditekan");
+}
+
+
+/* =========================================================
+   LEPAS TOMBOL
+========================================================= */
+
+function lepas() {
+
+    if (!sedangDitekan)
+        return;
+
+    const sekarang =
+        performance.now();
+
+    const jenis =
+        birama[biramaAktif][notAktif];
+
+    /*
+       Kalau sedang berada pada REST
+    */
+
+    if (jenis.includes("Rest")) {
+
+        sedangDitekan = false;
+
+        tombol.classList.remove("ditekan");
+
+        return;
+    }
+
+
+    const durasiSeharusnya =
+        JENIS[jenis].durasi * BEAT;
+
+    const durasiAktual =
+        sekarang - waktuMulaiTekan;
+
+
+    /*
+       Toleransi durasi hold.
+    */
+
+    const benarDurasi =
+        Math.abs(
+            durasiAktual - durasiSeharusnya
+        ) <= TOLERANSI;
+
+
+    /*
+       Toleransi waktu mulai.
+       Pengguna harus mulai menekan
+       mendekati waktu not dimulai.
+    */
+
+    const waktuMulaiAktual =
+        waktuMulaiTekan - waktuTargetMulai;
+
+    const benarMulai =
+        Math.abs(waktuMulaiAktual)
+        <= TOLERANSI;
+
+
+    tombol.classList.remove("ditekan");
+
+    sedangDitekan = false;
+
+
+    if (benarDurasi && benarMulai) {
+
+        tampilkanBenar();
+
+        lanjutNot();
+
+    } else {
+
+        tampilkanSalah();
+
+        /*
+           Jika salah, not yang sama
+           tetap harus dimainkan ulang.
+        */
+
+        setTimeout(() => {
+            mulaiNot();
+        }, 250);
+    }
+}
+
+
+/* =========================================================
+   EVENT TOUCH
+========================================================= */
+
+tombol.addEventListener(
+    "pointerdown",
+    function(e) {
+
+        e.preventDefault();
+
+        tekan();
+    }
+);
+
+
+tombol.addEventListener(
+    "pointerup",
+    function(e) {
+
+        e.preventDefault();
+
+        lepas();
+    }
+);
+
+
+tombol.addEventListener(
+    "pointercancel",
+    function(e) {
+
+        e.preventDefault();
+
+        lepas();
+    }
+);
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+function tampilkanBenar() {
+
+    status.textContent = "✓";
+
+    status.className = "benar";
+
+    document.body.classList.remove(
+        "flash-salah"
+    );
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add(
+        "flash-benar"
+    );
+
+    setTimeout(() => {
+
+        status.textContent = "";
+
+        status.className = "";
+
+        document.body.classList.remove(
+            "flash-benar"
+        );
+
+    }, 200);
+}
+
+
+function tampilkanSalah() {
+
+    status.textContent = "✕";
+
+    status.className = "salah";
+
+    document.body.classList.remove(
+        "flash-benar"
+    );
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add(
+        "flash-salah"
+    );
+
+    setTimeout(() => {
+
+        status.textContent = "";
+
+        status.className = "";
+
+        document.body.classList.remove(
+            "flash-salah"
+        );
+
+    }, 250);
+}
+
+
+/* =========================================================
+   MULAI
+========================================================= */
+
+mulaiNot();
+
+</script>
+
+</body>
+</html>
